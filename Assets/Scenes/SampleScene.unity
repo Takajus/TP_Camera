@@ -153,6 +153,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCamera: {fileID: 963194227}
+  currentConfiguration:
+    yaw: 0
+    pitch: 0
+    roll: 0
+    pivot: {x: 0, y: 0, z: -6}
+    distanceAuPivot: 0
+    fieldOfView: 180
+  targetConfiguration:
+    yaw: 0
+    pitch: 0
+    roll: 0
+    pivot: {x: 0, y: 0, z: 0}
+    distanceAuPivot: 0
+    fieldOfView: 0
+  smoothness: 0.1
+  _averageCameraConfiguration:
+    yaw: 0
+    pitch: 0
+    roll: 0
+    pivot: {x: 0, y: 0, z: 0}
+    distanceAuPivot: 0
+    fieldOfView: 0
 --- !u!4 &406544906
 Transform:
   m_ObjectHideFlags: 0
@@ -161,7 +183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406544904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -3.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -275,7 +297,7 @@ GameObject:
   m_Layer: 0
   m_Name: AView
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -298,7 +320,7 @@ MonoBehaviour:
   roll: 0
   pivot: {x: 0, y: 0, z: 0}
   distanceAuPivot: 0
-  fieldOfView: 180
+  fieldOfView: 34
 --- !u!4 &899047164
 Transform:
   m_ObjectHideFlags: 0
@@ -508,7 +530,7 @@ GameObject:
   m_Layer: 0
   m_Name: AView (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -531,7 +553,7 @@ MonoBehaviour:
   roll: 0
   pivot: {x: 0, y: 0, z: 0}
   distanceAuPivot: 0
-  fieldOfView: 51
+  fieldOfView: 66
 --- !u!4 &1836279702
 Transform:
   m_ObjectHideFlags: 0

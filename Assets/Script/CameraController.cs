@@ -7,6 +7,10 @@ namespace Script
     public class CameraController : MonoBehaviour
     {
         public Camera myCamera;
+        public CameraConfiguration currentConfiguration = new CameraConfiguration();
+        public CameraConfiguration targetConfiguration = new CameraConfiguration();
+        [SerializeField]
+        private float smoothness = 0.1f;
         [SerializeField]
         private CameraConfiguration _averageCameraConfiguration;
         
@@ -28,12 +32,23 @@ namespace Script
             {
                 _instance = this;
             }
-            
+
+
         }
 
         private void Update()
         {
-            ApplyConfiguration(myCamera, InterpolateCameraController());
+            targetConfiguration = InterpolateCameraController();
+            
+            if (smoothness * Time.deltaTime < 1)
+            {
+                currentConfiguration = Smoothing(currentConfiguration, targetConfiguration, smoothness);
+            }
+            else
+            {
+                currentConfiguration = targetConfiguration;
+            }
+            ApplyConfiguration(myCamera, currentConfiguration);
         }
 
         // Application des paramètres de la class CameraConfiguration
@@ -72,7 +87,6 @@ namespace Script
                     continue;
                 
                 CameraConfiguration configuration = activeView.GetConfiguration();
-                //_averageCameraConfiguration.yaw += configuration.yaw * activeView.weight;
                 sum += new Vector2(Mathf.Cos(configuration.yaw * Mathf.Deg2Rad), Mathf.Sin(configuration.yaw * Mathf.Deg2Rad)) * activeView.weight;
                 _averageCameraConfiguration.pitch += configuration.pitch * activeView.weight;
                 _averageCameraConfiguration.roll += configuration.roll * activeView.weight;
@@ -98,6 +112,17 @@ namespace Script
 
             return _averageCameraConfiguration;
         }
+        
+        private CameraConfiguration Smoothing(CameraConfiguration current, CameraConfiguration target, float speed)
+        {
+            current.yaw = Mathf.LerpAngle(current.yaw, target.yaw, speed);
+            current.pitch = Mathf.Lerp(current.pitch, target.pitch, speed);
+            current.roll = Mathf.Lerp(current.roll, target.roll, speed);
+            current.pivot += (target.pivot - current.pivot) * speed * Time.deltaTime;
+            current.distanceAuPivot = Mathf.Lerp(current.distanceAuPivot, target.distanceAuPivot, speed);
+            current.fieldOfView += (target.fieldOfView - current.fieldOfView) * speed * Time.deltaTime;
+            return current;
+        }
 
         public void OnDrawGizmos()
         {
@@ -108,6 +133,9 @@ namespace Script
             
             if(_averageCameraConfiguration != null)
                 _averageCameraConfiguration.DrawGizmos(Color.blue);
+            
+            if(currentConfiguration != null)
+                currentConfiguration.DrawGizmos(Color.green);
         }
     }
 }
