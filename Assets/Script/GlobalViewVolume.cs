@@ -10,5 +10,15 @@ public class GlobalViewVolume : AViewVolume
         SetAcctive(true);
     }
 
-  
+    private void OnGUI()
+    {
+        GUILayout.Label("Active View Volumes:");
+
+        List<AViewVolume> activeVolumes = ViewVolumeBlender.Instance.GetActiveVolumes();
+
+        foreach (AViewVolume volume in activeVolumes)
+        {
+            GUILayout.Label(volume.gameObject.name);
+        }
+    }
 }

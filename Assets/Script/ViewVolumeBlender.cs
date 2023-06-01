@@ -69,4 +69,21 @@ public class ViewVolumeBlender : MonoBehaviour
         activeViewVolumes = new List<AViewVolume>();
         volumesPerViews = new Dictionary<AView, List<AViewVolume>>();
     }
+
+    public List<AViewVolume> GetActiveVolumes()
+    {
+        return activeViewVolumes;
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label("Active View Volumes:");
+
+        List<AViewVolume> activeVolumes = ViewVolumeBlender.Instance.GetActiveVolumes();
+
+        foreach (AViewVolume volume in activeVolumes)
+        {
+            GUILayout.Label(volume.gameObject.name);
+        }
+    }
 }
