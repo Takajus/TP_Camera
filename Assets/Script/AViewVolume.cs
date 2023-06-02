@@ -2,6 +2,7 @@ using Script;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class AViewVolume : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public abstract class AViewVolume : MonoBehaviour
 
     public int priority = 0;
     public AView view;
+    public int Priority { get; set; } = 0;
 
     private int uid;
     private static int nextUid = 0;
@@ -16,20 +18,20 @@ public abstract class AViewVolume : MonoBehaviour
     public virtual float ComputeSelfWeight()
     {
         return 1.0f;
+        
     }
-
+    public int Uid
+    {
+        get { return uid; }
+    }
     private void Awake()
     {
         uid = nextUid;
         nextUid++;
     }
-    protected void SetActive(bool isActive)
-    {
-        gameObject.SetActive(isActive);
-    }
 
     protected bool IsActive { get; private set; }
-    protected void SetAcctive(bool isActive)
+    protected void SetActive(bool isActive)
     {
         if (isActive && !IsActive)
         {

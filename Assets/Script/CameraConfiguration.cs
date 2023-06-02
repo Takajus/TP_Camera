@@ -38,7 +38,7 @@ namespace Script
         {
             Gizmos.color = color;
             //Gizmos.DrawSphere(pivot, 0.25f);
-            Gizmos.DrawCube(pivot, new Vector3(0.4f, 0.4f, 0.75f));
+            
             Vector3 position = GetPosition();
             Gizmos.DrawLine(pivot, position);
             Gizmos.matrix = Matrix4x4.TRS(position, GetRotation(), Vector3.one);

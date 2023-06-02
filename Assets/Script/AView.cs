@@ -17,7 +17,10 @@ namespace Script
         {
             gameObject.SetActive(isActive);
         }
-
+        private void OnDrawGizmos()
+        {
+            GetConfiguration().DrawGizmos(Color.gray);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class TriggeredViewVolume : AViewVolume
@@ -26,17 +27,7 @@ public class TriggeredViewVolume : AViewVolume
 
     private bool CheckTarget(GameObject obj)
     {
-        if (target.CompareTag(obj.tag))
-        {
-            return true;
-        }
-
-        if (target.layer == obj.layer)
-        {
-            return true;
-        }
-
-        return false;
+        return target == obj;
     }
    
 
