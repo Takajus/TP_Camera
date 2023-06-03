@@ -29,27 +29,41 @@ namespace Script
         [Header("Speed")]
         public float speed;
 
+        public bool isAuto;
+
         private float yaw, pitch;
 
         public override CameraConfiguration GetConfiguration()
         {
             CameraConfiguration configuration = new CameraConfiguration();
             
-            float horizontalInput = Input.GetAxis("Horizontal");
-            distanceOnRail += horizontalInput * speed * Time.deltaTime;
-            
-            if (rail.isLoop)
-                distanceOnRail = Mathf.Repeat(distanceOnRail, rail.GetLength());
-            else
-                distanceOnRail = Mathf.Clamp(distanceOnRail, 0f, rail.GetLength());
-            
-            Debug.Log(distanceOnRail);
 
-            Vector3 dir = (target.position - transform.position).normalized;
+            Vector3 railPosition = new Vector3();
+            
+            if (!isAuto)
+            {
+                float horizontalInput = Input.GetAxis("Horizontal");
+                distanceOnRail += horizontalInput * speed * Time.deltaTime;
+
+                if (rail.isLoop)
+                    distanceOnRail = Mathf.Repeat(distanceOnRail, rail.GetLength());
+                else
+                    distanceOnRail = Mathf.Clamp(distanceOnRail, 0f, rail.GetLength());
+                
+                Debug.Log(distanceOnRail);
+                
+                railPosition = rail.GetPosition(distanceOnRail);
+            }
+            else
+            {
+                railPosition = rail.GetPositionAuto(target);
+            }
+            
+            Vector3 dir = (target.position - CameraController.Instance.myCamera.transform.position).normalized;
+            //Vector3 dir = (target.position - railPosition).normalized;
             yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             pitch = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
             
-            Vector3 railPosition = rail.GetPosition(distanceOnRail);
             configuration.pivot = railPosition;
             configuration.distanceAuPivot = 0f;
             configuration.yaw = yaw;

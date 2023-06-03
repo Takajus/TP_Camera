@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Script
 {
@@ -96,6 +98,42 @@ namespace Script
 
                 }
             }
+        }
+
+        public Vector3 GetPositionAuto(Transform target)
+        {
+            float distance = Single.PositiveInfinity;
+            Vector3 positionOnRail = new Vector3();
+            Vector3 targetPos = target.position;
+            Vector3 tempProj = new Vector3();
+
+            for (int i = 0; i < followPath.Count; i++)
+            {
+                if (isLoop)
+                {
+                    if (i < followPath.Count - 1)
+                        tempProj = MathUtils.GetNearestPointOnSegment(followPath[i].position, followPath[i + 1].position, targetPos);
+                    else
+                        tempProj = MathUtils.GetNearestPointOnSegment(followPath[i].position, followPath[0].position, targetPos);
+                }
+                else
+                {
+                    if (i >= followPath.Count - 1)
+                        continue;
+                    
+                    tempProj = MathUtils.GetNearestPointOnSegment(followPath[i].position, followPath[i + 1].position, targetPos);
+                }
+                
+                float tempDist = Vector3.Distance(tempProj, targetPos);
+
+                if (tempDist < distance)
+                {
+                    positionOnRail = tempProj;
+                    distance = tempDist;
+                }
+            }
+            
+            return positionOnRail;
         }
 
         private void OnDrawGizmos()
