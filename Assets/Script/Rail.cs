@@ -9,11 +9,12 @@ namespace Script
 {
     public class Rail : MonoBehaviour
     {
+        public bool isLoop;
+        private float length;
+        
         [SerializeField] private List<Transform> followPath = new List<Transform>();
         private List<float> segmentLengths = new List<float>();
-        public bool isLoop;
 
-        private float length;
 
         void Awake()
         {

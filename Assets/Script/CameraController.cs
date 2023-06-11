@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +21,6 @@ namespace Script
             get { return _instance; }
         }
 
-        private List<AView> _activeViews = new List<AView>();
 
         void Awake()
         {
@@ -52,11 +52,16 @@ namespace Script
         // Application des paramètres de la class CameraConfiguration
         public void ApplyConfiguration(Camera cam, CameraConfiguration cameraConfiguration)
         {
-            cam.transform.rotation = cameraConfiguration.GetRotation();
-            cam.transform.position = cameraConfiguration.GetPosition();
-            cam.fieldOfView = cameraConfiguration.fieldOfView;
+            if (cam != null && cameraConfiguration != null)
+            {
+                cam.transform.rotation = cameraConfiguration.GetRotation();
+                cam.transform.position = cameraConfiguration.GetPosition();
+                cam.fieldOfView = cameraConfiguration.fieldOfView;
+            }
         }
 
+        private List<AView> _activeViews = new List<AView>();
+        
         public void AddView(AView view)
         {
             if (!_activeViews.Contains(view))
@@ -98,7 +103,7 @@ namespace Script
             if (totalWeight <= 0)
             {
                 Debug.LogError("Total weight is inferior or equal to ZERO !");
-                return null;
+                return _averageCameraConfiguration;
             }
 
             _averageCameraConfiguration.yaw = Vector2.SignedAngle(Vector2.right, sum);
@@ -146,5 +151,6 @@ namespace Script
                 curve.DrawGizmo(Color.yellow, transform.localToWorldMatrix, sample, pos);
             }
         }
+        
     }
 }

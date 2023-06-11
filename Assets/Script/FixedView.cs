@@ -13,12 +13,7 @@ namespace Script
         public float pitch;
         [Range(-180f, 180f)]
         public float roll;
-        
-        [Header("Position")]
-        public Vector3 pivot;
-        [Range(0f, Single.PositiveInfinity)]
-        public float distanceAuPivot;
-        
+
         [Header("FoV")]
         [Range(0f, 180f)]
         public float fieldOfView;

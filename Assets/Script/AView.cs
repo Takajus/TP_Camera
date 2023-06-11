@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace Script
 {
-    
     public abstract class AView : MonoBehaviour
     {
         public float weight;
-        public bool isActiveOnStart;
+        //public bool isActiveOnStart;
 
         public virtual CameraConfiguration GetConfiguration()
         {
@@ -16,10 +15,20 @@ namespace Script
 
         public void SetActive(bool isActive)
         {
-            gameObject.SetActive(isActive);
+            if (isActive) 
+            { 
+                CameraController.Instance.AddView(this); 
+            } 
+            else 
+            { 
+                CameraController.Instance.RemoveView(this); 
+            } 
         }
+        
+    }
+}
 
-        private void Start()
+/*private void Start()
         {
             if (isActiveOnStart)
             {
@@ -32,6 +41,4 @@ namespace Script
                 CameraController.Instance.RemoveView(this);
             }
             
-        }
-    }
-}
+        }*/
