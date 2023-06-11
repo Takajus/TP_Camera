@@ -12,7 +12,7 @@ public class SphereViewVolume : AViewVolume
 
     private void OnDrawGizmos()
     {
-        // Dessiner les sphères du volume
+        // Dessiner les sphï¿½res du volume
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, outerRadius);
 
@@ -23,20 +23,18 @@ public class SphereViewVolume : AViewVolume
     {
         if (innerRadius > outerRadius)
         {
-            float temp = innerRadius;
-            innerRadius = outerRadius;
-            outerRadius = temp;
+            (innerRadius, outerRadius) = (outerRadius, innerRadius);
         }
     }
 
     public void Update()
     {
-        // Mettre à jour la distance entre la cible et cette vue
+        // Mettre ï¿½ jour la distance entre la cible et cette vue
         if (target != null)
         {
             distance = Vector3.Distance(target.position, transform.position);
 
-            // Vérifier si le volume doit être activé ou désactivé en fonction de la distance
+            // Vï¿½rifier si le volume doit ï¿½tre activï¿½ ou dï¿½sactivï¿½ en fonction de la distance
             if (distance <= outerRadius && !IsActive)
             {
                 SetActive(true);
@@ -49,29 +47,26 @@ public class SphereViewVolume : AViewVolume
     }
     public override float ComputeSelfWeight()
     {
-      
+        /*float targetDistance = Vector3.Distance(target.position,transform.position);
 
-                float targetDistance = Vector3.Distance(target.position,transform.position);
-
-                if (targetDistance >= outerRadius)
-                {
-                    view.weight = 0.0f;
-                }
-                else if (targetDistance < innerRadius)
-                {
-                    view.weight = 1.0f;
-                }
-                else
-                {
-                    view.weight = 1.0f - ((targetDistance - innerRadius) / (outerRadius - innerRadius));
-                }
-                
-
+        if (targetDistance >= outerRadius)
+        {
+            view.weight = 0.0f;
+        }
+        else if (targetDistance < innerRadius)
+        {
+            view.weight = 1.0f;
+        }
+        else
+        {
+            view.weight = 1.0f - ((targetDistance - innerRadius) / (outerRadius - innerRadius));
+        }
+        
         view.weight = Mathf.Clamp01(view.weight);
 
-        return view.weight;
-      
+        return view.weight;*/
+        float normalizedDistance = Mathf.Clamp01((distance - innerRadius) / (outerRadius - innerRadius));
+        float weight = 1f - normalizedDistance;
+        return weight;
     }
-
-
 }

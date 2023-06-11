@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   distanceAuPivot: 0
   fieldOfView: 41
@@ -207,7 +206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 1
   yaw: 0
   pitch:
   - -10
@@ -227,7 +225,7 @@ MonoBehaviour:
     A: {x: 0, y: 0, z: -2}
     B: {x: 0, y: 0, z: -4}
     C: {x: 0, y: 2, z: -4}
-    D: {x: 0, y: 1, z: 2}
+    D: {x: 0, y: 1, z: -1}
   curvePosition: 0
   curveSpeed: 2
 --- !u!4 &41904721
@@ -301,6 +299,7 @@ MonoBehaviour:
     pivot: {x: 0, y: 0, z: 0}
     distanceAuPivot: 0
     fieldOfView: 0
+  isCutRequested: 0
   curve:
     A: {x: 1, y: -0.5, z: 0}
     B: {x: 4, y: -0.5, z: 0}
@@ -399,7 +398,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   distanceAuPivot: 0
   fieldOfView: 41
@@ -471,7 +469,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   fieldOfView: 60
   target: {fileID: 920992215}
@@ -632,7 +629,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   distanceAuPivot: 0
   fieldOfView: 41
@@ -671,7 +667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   yaw: 0
   pitch: 0
   roll: 0
@@ -954,7 +949,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   fieldOfView: 120
   target: {fileID: 920992215}
@@ -1000,7 +994,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451401298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1099,7 +1093,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   yaw: 0
   pitch: 0
   roll: 0
@@ -1166,7 +1159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  isActiveOnStart: 0
   roll: 0
   distanceAuPivot: 0
   fieldOfView: 41

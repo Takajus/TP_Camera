@@ -5,90 +5,22 @@ using UnityEngine;
 
 public class ViewVolumeBlender : MonoBehaviour
 {
-    private static ViewVolumeBlender instance;
-    private List<AViewVolume> activeViewVolumes;
-    private Dictionary<AView, List<AViewVolume>> volumesPerViews;
-    private List<AView> activeViews;
+    private List<AViewVolume> activeViewVolumes = new List<AViewVolume>();
+    private Dictionary<AView, List<AViewVolume>> volumesPerViews = new Dictionary<AView, List<AViewVolume>>();
 
+    private static ViewVolumeBlender instance;
     public static ViewVolumeBlender Instance
     {
         get
         {
+            if (instance == null)
+            {
+                instance = new ViewVolumeBlender();
+            }
             return instance;
         }
     }
-
-
-    public void AddVolume(AViewVolume volume)
-    {
-        activeViewVolumes.Add(volume);
-
-        if (!volumesPerViews.ContainsKey(volume.view))
-        {
-            volumesPerViews[volume.view] = new List<AViewVolume>();
-
-            volume.view.gameObject.SetActive(true);
-            activeViews.Add(volume.view);
-        }
-
-        volumesPerViews[volume.view].Add(volume);
-        
-    }
-
-
-    public void RemoveVolume(AViewVolume volume) 
-    {
-        activeViewVolumes.Remove(volume);
-        volumesPerViews[volume.view].Remove(volume);
-
-        if (volumesPerViews.ContainsKey(volume.view))
-        {
-            
-            volumesPerViews[volume.view].Remove(volume);
-
-            // Si la liste est vide après la suppression, supprime également la vue du dictionnaire
-            if (volumesPerViews[volume.view].Count == 0)
-            {
-                volumesPerViews.Remove(volume.view);
-                volume.view.gameObject.SetActive(false);
-                activeViews.Remove(volume.view);
-            }
-
-        }
-
-
-    }
-    private void Update()
-    {
-        
-        activeViewVolumes.Sort((volume1, volume2) =>
-        {
-            if (volume1.Priority == volume2.Priority)
-            {
-                return volume1.Uid.CompareTo(volume2.Uid); // Trier par Uid croissant en cas d'égalité de priorité
-            }
-            return volume1.Priority.CompareTo(volume2.Priority); // Trier par priorité croissante
-        });
-
-        foreach (AViewVolume volume in activeViewVolumes)
-        {
-            volume.view.weight = 0f; // Réinitialise le poids à 0
-            float weight = volume.ComputeSelfWeight();
-            weight = Mathf.Clamp01(weight);
-
-            float remainingWeight = 1.0f - weight;
-
-            // Multiplier le poids de toutes les vues actives par remainingWeight
-            foreach (AView view in activeViews)
-            {
-                view.weight *= remainingWeight;
-            }
-
-            // Ajouter weight au poids de la vue associée au volume
-            volume.view.weight += weight;
-        }
-    }
-
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -99,26 +31,83 @@ public class ViewVolumeBlender : MonoBehaviour
         {
             instance = this;
         }
-
-        activeViewVolumes = new List<AViewVolume>();
-        volumesPerViews = new Dictionary<AView, List<AViewVolume>>();
-        activeViews = new List<AView>();
     }
 
-    public List<AViewVolume> GetActiveVolumes()
+    public void AddVolume(AViewVolume volume)
     {
-        return activeViewVolumes;
+        activeViewVolumes.Add(volume);
+        AView view = volume.view;
+
+        if (!volumesPerViews.ContainsKey(view))
+        {
+            volumesPerViews[view] = new List<AViewVolume>();
+            view.SetActive(true);
+        }
+        volumesPerViews[view].Add(volume);
+    }
+
+
+    public void RemoveVolume(AViewVolume volume) 
+    {
+        activeViewVolumes.Remove(volume);
+        AView view = volume.view;
+
+        if (volumesPerViews.ContainsKey(view))
+        {
+            volumesPerViews[view].Remove(volume);
+            if (volumesPerViews[view].Count == 0)
+            {
+                volumesPerViews.Remove(view);
+                view.SetActive(false);
+            }
+        }
+    }
+    public void Update()
+    {
+        foreach (var aViewVolume in activeViewVolumes)
+        {
+            //volume.view.weight = 0f; // Rï¿½initialise le poids ï¿½ 0
+            aViewVolume.view.weight = 0f;
+        }
+        
+        activeViewVolumes.Sort((volume1, volume2) =>
+        {
+            int priorityComparison = volume1.Priority.CompareTo(volume2.Priority);
+            if (priorityComparison == 0)
+            {
+                return volume1.Uid.CompareTo(volume2.Uid); // Trier par Uid croissant en cas d'ï¿½galitï¿½ de prioritï¿½
+            }
+            return priorityComparison; // Trier par prioritï¿½ croissante
+        });
+
+        float totalWeight = 0.0f;
+
+        foreach (AViewVolume volume in activeViewVolumes)
+        {
+            
+            float weight = volume.ComputeSelfWeight();
+            weight = Mathf.Clamp01(weight);
+
+            float remainingWeight = 1.0f - weight;
+
+            // Multiplier le poids de toutes les vues actives par remainingWeight
+            foreach (AView view in volumesPerViews.Keys)
+            {
+                view.weight *= remainingWeight;
+            }
+
+            // Ajouter weight au poids de la vue associï¿½e au volume
+            volume.view.weight += weight;
+        }
     }
 
     private void OnGUI()
     {
         GUILayout.Label("Active View Volumes:");
-
-        List<AViewVolume> activeVolumes = ViewVolumeBlender.Instance.GetActiveVolumes();
-
-        foreach (AViewVolume volume in activeVolumes)
+        
+        foreach (AViewVolume volume in ViewVolumeBlender.Instance.activeViewVolumes)
         {
-            GUILayout.Label(volume.gameObject.name);
+            GUILayout.Label(volume.name);
         }
     }
 }

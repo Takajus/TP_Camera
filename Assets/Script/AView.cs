@@ -15,8 +15,16 @@ namespace Script
 
         public void SetActive(bool isActive)
         {
-            gameObject.SetActive(isActive);
+            if (isActive) 
+            { 
+                CameraController.Instance.AddView(this); 
+            } 
+            else 
+            { 
+                CameraController.Instance.RemoveView(this); 
+            } 
         }
+        
         private void OnDrawGizmos()
         {
             GetConfiguration().DrawGizmos(Color.gray);

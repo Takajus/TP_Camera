@@ -63,7 +63,6 @@ namespace Script
                 tempFov = Mathf.Lerp(fieldOfView[1], fieldOfView[2], (curvePosition - 0.5f) * 2f);
             }
             
-            Quaternion rot = Quaternion.Euler(tempPitch, yaw, tempRoll);
             configuration.pivot = curve.GetPosition(curvePosition, curveToWorldMatrix);
             configuration.distanceAuPivot = 0f;
             configuration.pitch = tempPitch;

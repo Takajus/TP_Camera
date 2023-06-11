@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Script
@@ -14,7 +15,7 @@ namespace Script
         [SerializeField]
         private CameraConfiguration _averageCameraConfiguration;
 
-        [SerializeField] private bool isCutRequested = false;
+        private bool isCutRequested = false;
 
         private static CameraController _instance;
         public static CameraController Instance
@@ -38,15 +39,31 @@ namespace Script
 
         private void Update()
         {
+            if (_activeViews.Count == 0)
+            {
+                return;
+            }
+            
+            targetConfiguration = InterpolateCameraController();
             if (isCutRequested)
             {
-                _averageCameraConfiguration = InterpolateCameraController();
-                ApplyConfiguration(myCamera, _averageCameraConfiguration);
+                targetConfiguration = _activeViews[_activeViews.Count - 1].GetConfiguration();
+                ApplyConfiguration(myCamera, targetConfiguration);
                 isCutRequested = false;
             }
             else
             {
-                ApplyConfiguration(myCamera, InterpolateCameraController());
+                /*if (smoothness * Time.deltaTime < 1)
+                {
+                    currentConfiguration = Smoothing(currentConfiguration, targetConfiguration, smoothness);
+                }
+                else
+                {
+                    currentConfiguration = targetConfiguration;
+                }
+                ApplyConfiguration(myCamera, currentConfiguration);*/
+                ApplyConfiguration(myCamera, targetConfiguration);
+
             }
         }
 
@@ -92,13 +109,13 @@ namespace Script
                 _averageCameraConfiguration.pivot += configuration.pivot * activeView.weight;
                 _averageCameraConfiguration.distanceAuPivot += configuration.distanceAuPivot * activeView.weight;
                 _averageCameraConfiguration.fieldOfView += configuration.fieldOfView * activeView.weight;
-
+                
                 totalWeight += activeView.weight;
             }
 
             if (totalWeight <= 0)
             {
-                Debug.LogError("Total weight is inferior or equal to ZERO !");
+                //Debug.LogError("Total weight is inferior or equal to ZERO !");
                 return null;
             }
 

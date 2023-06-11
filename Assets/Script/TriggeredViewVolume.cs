@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,12 +7,11 @@ using UnityEngine;
 
 public class TriggeredViewVolume : AViewVolume
 {
-    [SerializeField]
-    private GameObject target;
+    public GameObject target;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (CheckTarget(other.gameObject))
+        if (CheckTarget(other))
         {
             SetActive(true);
         }
@@ -19,17 +19,15 @@ public class TriggeredViewVolume : AViewVolume
 
     private void OnTriggerExit(Collider other)
     {
-        if (CheckTarget(other.gameObject))
+        if (CheckTarget(other))
         {
             SetActive(false);
         }
     }
 
-    private bool CheckTarget(GameObject obj)
+    private bool CheckTarget(Collider obj)
     {
-        return target == obj;
+        return obj.gameObject == target;
     }
-   
 
-    
 }

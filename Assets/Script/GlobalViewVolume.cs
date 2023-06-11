@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class GlobalViewVolume : AViewVolume
 {
-    // Start is called before the first frame update
     void Start()
     {
         SetActive(true);
     }
-
-  
 }
