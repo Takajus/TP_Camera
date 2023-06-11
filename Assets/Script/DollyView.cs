@@ -58,8 +58,11 @@ namespace Script
             {
                 railPosition = rail.GetPositionAuto(target);
             }
+
+            Vector3 dir = new Vector3();
             
-            Vector3 dir = (target.position - CameraController.Instance.myCamera.transform.position).normalized;
+            if(CameraController.Instance.myCamera.transform.position != null)
+                    dir = (target.position - CameraController.Instance.myCamera.transform.position).normalized;
             //Vector3 dir = (target.position - railPosition).normalized;
             yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             pitch = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;

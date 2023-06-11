@@ -60,8 +60,8 @@ namespace Script
                 else
                 {
                     currentConfiguration = targetConfiguration;
-                }
-                ApplyConfiguration(myCamera, currentConfiguration);*/
+                }*/
+                //ApplyConfiguration(myCamera, currentConfiguration);
                 ApplyConfiguration(myCamera, targetConfiguration);
 
             }
