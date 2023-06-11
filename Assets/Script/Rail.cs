@@ -33,7 +33,7 @@ namespace Script
                     segmentLengths.Add(0f);
             }
             
-            Debug.Log(length);
+//            Debug.Log(length);
 
             if (isLoop)
             {

@@ -32,8 +32,6 @@ namespace Script
             {
                 _instance = this;
             }
-
-
         }
 
         private void Update()
@@ -124,6 +122,12 @@ namespace Script
             return current;
         }
 
+        public Curve curve;
+        [Range(0, 20)]
+        public int sample = 20;
+        [Range(0f, 1f)]
+        public float pos;
+
         public void OnDrawGizmos()
         {
             foreach (AView view in _activeViews)
@@ -136,6 +140,11 @@ namespace Script
             
             if(currentConfiguration != null)
                 currentConfiguration.DrawGizmos(Color.green);
+
+            if (curve != null)
+            {
+                curve.DrawGizmo(Color.yellow, transform.localToWorldMatrix, sample, pos);
+            }
         }
     }
 }

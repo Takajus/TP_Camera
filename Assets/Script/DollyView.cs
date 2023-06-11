@@ -42,8 +42,8 @@ namespace Script
             
             if (!isAuto)
             {
-                float horizontalInput = Input.GetAxis("Horizontal");
-                distanceOnRail += horizontalInput * speed * Time.deltaTime;
+                float horizontal = Input.GetAxis("Horizontal");
+                distanceOnRail += horizontal * speed * Time.deltaTime;
 
                 if (rail.isLoop)
                     distanceOnRail = Mathf.Repeat(distanceOnRail, rail.GetLength());
