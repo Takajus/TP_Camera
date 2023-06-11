@@ -14,7 +14,8 @@ namespace Script
         private float smoothness = 0.1f;
         [SerializeField]
         private CameraConfiguration _averageCameraConfiguration;
-        
+        private bool isCutRequested = false;
+
         private static CameraController _instance;
         public static CameraController Instance
         {
@@ -33,19 +34,35 @@ namespace Script
                 _instance = this;
             }
         }
+        
+        public void Cut()
+        {
+            isCutRequested = true;
+        }
 
-        private void Update()
+        public void Update()
         {
             targetConfiguration = InterpolateCameraController();
             
-            if (smoothness * Time.deltaTime < 1)
+            if (isCutRequested)
             {
-                currentConfiguration = Smoothing(currentConfiguration, targetConfiguration, smoothness);
+                
+                currentConfiguration = targetConfiguration;
+                isCutRequested = false;
+                return;
             }
             else
             {
-                currentConfiguration = targetConfiguration;
+                if (smoothness * Time.deltaTime < 1)
+                {
+                    currentConfiguration = Smoothing(currentConfiguration, targetConfiguration, smoothness);
+                }
+                else
+                {
+                    currentConfiguration = targetConfiguration;
+                }
             }
+            
             ApplyConfiguration(myCamera, currentConfiguration);
         }
 
@@ -60,7 +77,7 @@ namespace Script
             }
         }
 
-        private List<AView> _activeViews = new List<AView>();
+        public List<AView> _activeViews = new List<AView>();
         
         public void AddView(AView view)
         {

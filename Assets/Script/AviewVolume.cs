@@ -8,11 +8,13 @@ namespace Script
     {
         public int Priority = 0;
         public AView View;
-
-        private int Uid;
+        
+        public bool isCutOnSwitch;
+        
+        internal int Uid;
         private static int NextUid = 0;
 
-        protected virtual float ComputeSelfWeight()
+        public virtual float ComputeSelfWeight()
         {
             return 1.0f;
         }
@@ -25,7 +27,7 @@ namespace Script
         
         protected bool IsActive { get; private set; }
         
-        protected void SetActive(bool isActive)
+        public void SetActive(bool isActive)
         {
             if (isActive)
             {
@@ -35,7 +37,13 @@ namespace Script
             {
                 ViewvolumeBender.Instance.RemoveVolume(this);
             }
-            
+
+            if (isCutOnSwitch)
+            {
+                CameraController.Instance.Update();
+                CameraController.Instance.Cut();
+            }
+
             IsActive = isActive;
         }
     }
