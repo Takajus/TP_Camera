@@ -9,7 +9,9 @@ namespace Script
         public Camera myCamera;
         [SerializeField]
         private CameraConfiguration _averageCameraConfiguration;
-        
+
+        [SerializeField] private bool isCutRequested = false;
+
         private static CameraController _instance;
         public static CameraController Instance
         {
@@ -33,7 +35,16 @@ namespace Script
 
         private void Update()
         {
-            ApplyConfiguration(myCamera, InterpolateCameraController());
+            if (isCutRequested)
+            {
+                _averageCameraConfiguration = InterpolateCameraController();
+                ApplyConfiguration(myCamera, _averageCameraConfiguration);
+                isCutRequested = false;
+            }
+            else
+            {
+                ApplyConfiguration(myCamera, InterpolateCameraController());
+            }
         }
 
         // Application des paramètres de la class CameraConfiguration
@@ -98,6 +109,11 @@ namespace Script
 
             return _averageCameraConfiguration;
         }
+        public void Cut()
+        {
+            isCutRequested = true;
+        }
+
 
         public void OnDrawGizmos()
         {
