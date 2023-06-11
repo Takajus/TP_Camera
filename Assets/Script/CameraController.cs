@@ -13,7 +13,9 @@ namespace Script
         private float smoothness = 0.1f;
         [SerializeField]
         private CameraConfiguration _averageCameraConfiguration;
-        
+
+        [SerializeField] private bool isCutRequested = false;
+
         private static CameraController _instance;
         public static CameraController Instance
         {
@@ -36,17 +38,16 @@ namespace Script
 
         private void Update()
         {
-            targetConfiguration = InterpolateCameraController();
-            
-            if (smoothness * Time.deltaTime < 1)
+            if (isCutRequested)
             {
-                currentConfiguration = Smoothing(currentConfiguration, targetConfiguration, smoothness);
+                _averageCameraConfiguration = InterpolateCameraController();
+                ApplyConfiguration(myCamera, _averageCameraConfiguration);
+                isCutRequested = false;
             }
             else
             {
-                currentConfiguration = targetConfiguration;
+                ApplyConfiguration(myCamera, InterpolateCameraController());
             }
-            ApplyConfiguration(myCamera, currentConfiguration);
         }
 
         // Application des paramètres de la class CameraConfiguration
@@ -109,6 +110,10 @@ namespace Script
             _averageCameraConfiguration.fieldOfView /= totalWeight;
 
             return _averageCameraConfiguration;
+        }
+        public void Cut()
+        {
+            isCutRequested = true;
         }
         
         private CameraConfiguration Smoothing(CameraConfiguration current, CameraConfiguration target, float speed)

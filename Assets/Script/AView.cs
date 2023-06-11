@@ -7,8 +7,7 @@ namespace Script
     public abstract class AView : MonoBehaviour
     {
         public float weight;
-        public bool isActiveOnStart;
-
+       
         public virtual CameraConfiguration GetConfiguration()
         {
             return new CameraConfiguration();
@@ -18,20 +17,10 @@ namespace Script
         {
             gameObject.SetActive(isActive);
         }
-
-        private void Start()
+        private void OnDrawGizmos()
         {
-            if (isActiveOnStart)
-            {
-                SetActive(true);
-                CameraController.Instance.AddView(this);
-            }
-            else
-            {
-                SetActive(false);
-                CameraController.Instance.RemoveView(this);
-            }
-            
+            GetConfiguration().DrawGizmos(Color.gray);
         }
+
     }
 }
